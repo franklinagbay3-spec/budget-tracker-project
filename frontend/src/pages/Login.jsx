@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,13 +22,41 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow w-full max-w-md">
 
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Login
+        </h2>
 
-      <button onClick={handleLogin}>Login</button>
+        <input
+          className="w-full p-3 mb-3 border rounded"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          className="w-full p-3 mb-4 border rounded"
+          placeholder="Password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          onClick={handleLogin}
+          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
+        >
+          Login
+        </button>
+
+        {/* LINK TO REGISTER */}
+        <div className="text-center mt-4">
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Don't have an account? Register
+          </Link>
+        </div>
+
+      </div>
     </div>
   );
 }
