@@ -58,8 +58,40 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+const updateTransaction = async (req, res) => {
+  try {
+    const transaction = await Transaction.findById(req.params.id);
+
+    if (!transaction) {
+      return res.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    // 🔐 ownership check (IMPORTANT)
+    if (transaction.userId.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    transaction.type = req.body.type || transaction.type;
+    transaction.amount = req.body.amount || transaction.amount;
+    transaction.category = req.body.category || transaction.category;
+    transaction.accountType =
+      req.body.accountType || transaction.accountType;
+
+    const updatedTransaction = await transaction.save();
+
+    res.json(updatedTransaction);
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   addTransaction,
   getTransactions,
   deleteTransaction,
+  updateTransaction
 };
