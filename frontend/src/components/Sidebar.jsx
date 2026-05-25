@@ -32,7 +32,7 @@ function Sidebar() {
       {/* TOP */}
       <div>
         <div className="mb-10">
-          <h1 className="text-3xl font-bold">Budget Tracker</h1>
+          <h1 className="text-3xl font-bold">Wealth Pilot</h1>
           <p className="text-sm text-purple-200">Manage your finances</p>
         </div>
 

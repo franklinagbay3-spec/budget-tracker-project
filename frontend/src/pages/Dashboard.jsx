@@ -3,9 +3,6 @@ import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 import AddTransaction from "../components/AddTransaction";
-import ExpenseChart from "../components/ExpenseChart";
-import MonthlyBarChart from "../components/MonthlyBarChart";
-
 import Sidebar from "../components/Sidebar";
 import RightPanel from "../components/RightPanel";
 import Header from "../components/Header";
@@ -60,9 +57,9 @@ function Dashboard() {
     } catch (err) { console.log(err); }
   };
 
-  const income = transactions.filter((t) => t.type === "income").reduce((acc, t) => acc + Number(t.amount), 0);
+  const income   = transactions.filter((t) => t.type === "income").reduce((acc, t) => acc + Number(t.amount), 0);
   const expenses = transactions.filter((t) => t.type === "expense").reduce((acc, t) => acc + Number(t.amount), 0);
-  const balance = income - expenses;
+  const balance  = income - expenses;
 
   return (
     <div className="flex bg-[#f5f6fa] dark:bg-gray-900 h-screen overflow-hidden">
@@ -93,60 +90,52 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* CHARTS */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5">
-            <ExpenseChart income={income} expenses={expenses} />
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5">
-            <MonthlyBarChart transactions={transactions} />
-          </div>
-        </div>
+        {/* ADD TRANSACTION + RECENT TRANSACTIONS SIDE BY SIDE */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-        {/* ADD TRANSACTION */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5 mb-6">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-2xl font-bold dark:text-white">Add Transaction</h2>
-          </div>
-          <AddTransaction onAdd={handleAdd} />
-        </div>
-
-        {/* RECENT TRANSACTIONS */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold dark:text-white">Recent Transactions</h2>
-            <button className="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-xl transition">
-              Filter
-            </button>
+          {/* ADD TRANSACTION */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
+            <h2 className="text-xl font-bold dark:text-white mb-6">Add Transaction</h2>
+            <AddTransaction onAdd={handleAdd} />
           </div>
 
-          {transactions.length === 0 ? (
-            <div className="text-center py-10 text-gray-500 dark:text-gray-400">
-              No transactions yet.
+          {/* RECENT TRANSACTIONS */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold dark:text-white">Recent Transactions</h2>
+              <button className="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2 rounded-xl transition text-sm">
+                Filter
+              </button>
             </div>
-          ) : (
-            transactions.slice(0, 3).map((t) => (
-              <div key={t._id} className="border-b dark:border-gray-700 last:border-none py-5 flex justify-between items-center">
-                <div>
-                  <p className="font-semibold capitalize text-lg dark:text-white">{t.type}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t.category} • {t.accountType}</p>
-                </div>
-                <div className="flex items-center gap-5">
-                  <p className={t.type === "income" ? "text-green-600 font-bold text-lg" : "text-red-500 font-bold text-lg"}>
-                    ₱{t.amount}
-                  </p>
-                  <button onClick={() => handleEditClick(t)} className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-4 py-2 rounded-xl hover:bg-blue-200 dark:hover:bg-blue-800 transition">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(t._id)} className="bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300 px-4 py-2 rounded-xl hover:bg-red-200 dark:hover:bg-red-800 transition">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
 
+            {transactions.length === 0 ? (
+              <div className="text-center py-10 text-gray-500 dark:text-gray-400">
+                No transactions yet.
+              </div>
+            ) : (
+              transactions.slice(0, 3).map((t) => (
+                <div key={t._id} className="border-b dark:border-gray-700 last:border-none py-4 flex justify-between items-center">
+                  <div>
+                    <p className="font-semibold capitalize dark:text-white">{t.type}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t.category} • {t.accountType}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <p className={t.type === "income" ? "text-green-600 font-bold" : "text-red-500 font-bold"}>
+                      ₱{t.amount}
+                    </p>
+                    <button onClick={() => handleEditClick(t)} className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-3 py-1 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition text-xs">
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(t._id)} className="bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300 px-3 py-1 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition text-xs">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+        </div>
       </div>
 
       <RightPanel income={income} expenses={expenses} balance={balance} transactions={transactions} />
