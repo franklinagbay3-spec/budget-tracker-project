@@ -15,6 +15,8 @@ function Login() {
       );
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("name", data.name);   // ADD
+      localStorage.setItem("email", data.email); // ADD
       navigate("/dashboard");
     } catch (err) {
       alert("Login failed");
@@ -49,7 +51,6 @@ function Login() {
           Login
         </button>
 
-        {/* LINK TO REGISTER */}
         <div className="text-center mt-4">
           <Link to="/register" className="text-blue-500 hover:underline">
             Don't have an account? Register
