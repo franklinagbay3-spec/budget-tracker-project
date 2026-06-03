@@ -9,11 +9,13 @@ const app = express();
 
 const { protect } = require("./middleware/authMiddleware");
 const transactionRoutes = require("./routes/transactionRoutes");
+const goalRoutes = require("./routes/goalRoutes"); // ADD
+const billRoutes = require("./routes/billRoutes"); // ADD
+const planRoutes        = require("./routes/planRoutes"); // ADD
 
 app.use(cors());
 app.use(express.json());
 
-// Connect database
 connectDB();
 
 app.get("/", (req, res) => {
@@ -29,10 +31,10 @@ app.listen(PORT, () => {
 app.use("/api/auth", authRoutes);
 
 app.get("/api/protected", protect, (req, res) => {
-  res.json({
-    message: "You accessed a protected route!",
-    user: req.user,
-  });
+  res.json({ message: "You accessed a protected route!", user: req.user });
 });
 
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/goals", goalRoutes); // ADD
+app.use("/api/bills", billRoutes); // ADD
+app.use("/api/plans",        planRoutes); // ADD

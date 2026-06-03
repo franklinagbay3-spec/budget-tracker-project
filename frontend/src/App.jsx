@@ -14,6 +14,11 @@ if (localStorage.getItem("darkMode") === "true") {
   document.documentElement.classList.add("dark");
 }
 
+// At the top of App.jsx, outside the component — add this line alongside the dark mode one:
+if (localStorage.getItem("fontSize")) {
+  document.documentElement.style.fontSize = localStorage.getItem("fontSize");
+}
+
 function App() {
   return (
     <Routes>
